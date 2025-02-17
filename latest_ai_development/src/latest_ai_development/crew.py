@@ -1,26 +1,27 @@
+# src/latest_ai_development/crew.py
 from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task
-
-# If you want to run a snippet of code before or after the crew starts, 
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
+from crewai_tools import SerperDevTool
 
 @CrewBase
-class LatestAiDevelopment():
+class LatestAiDevelopmentCrew():
 	"""LatestAiDevelopment crew"""
 
-	# Learn more about YAML configuration files here:
-	# Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-	# Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-	agents_config = 'config/agents.yaml'
-	tasks_config = 'config/tasks.yaml'
+	@before_kickoff
+	def before_kickoff_function(self, inputs):
+		print(f"Before kickoff function with inputs: {inputs}")
+		return inputs # You can return the inputs or modify them as needed
 
-	# If you would like to add tools to your agents, you can learn more about it here:
-	# https://docs.crewai.com/concepts/agents#agent-tools
+	@after_kickoff
+	def after_kickoff_function(self, result):
+		print(f"After kickoff function with result: {result}")
+		return result # You can return the result or modify it as needed
+
 	@agent
 	def researcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['researcher'],
+            tools=[SerperDevTool()],
 			verbose=True
 		)
 

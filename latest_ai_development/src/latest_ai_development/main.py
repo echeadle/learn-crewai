@@ -4,7 +4,7 @@ import warnings
 
 from datetime import datetime
 
-from latest_ai_development.crew import LatestAiDevelopment
+from latest_ai_development.crew import LatestAiDevelopmentCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -18,12 +18,12 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
+        'topic': 'AI Agents',
         'current_year': str(datetime.now().year)
     }
     
     try:
-        LatestAiDevelopment().crew().kickoff(inputs=inputs)
+        LatestAiDevelopmentCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
